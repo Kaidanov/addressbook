@@ -6,7 +6,7 @@ from django.views import generic
 from .models import Contact
 from django.core.urlresolvers import reverse
 
-
+#test connectivity issue
 class ListContactView(generic.ListView):
     model = Contact
     template_name = 'contact_list.html'
