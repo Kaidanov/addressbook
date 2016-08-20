@@ -9,6 +9,28 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 
+from .forms import ContactForm
+from django.http import HttpResponseRedirect
+from django.core.context_processors import csrf
+from django.shortcuts import render_to_response
+
+
+def contact_form(request):
+    if request.POST:   #
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/') #redirect after saving the form
+    else:
+        form = ContactForm()
+        args = {}
+        args.update(csrf(request)) #building form securely
+        args['form'] = form
+
+        return render_to_response("create_contact_form.html", args)
+
+
+
 
 # A mixin is a special kind of multiple inheritance. There are two main situations where mixins are used:
 #
@@ -36,7 +58,6 @@ class LoggedInMixin(object):
 # By placing LoggedInMixin first, you’re guaranteed that by the time execution reaches
 # ContactOwnerMixin and DetailView, you have a logged in, authenticated user.
 class ContactOwnerMixin(object):
-
     def get_object(self, queryset=None):
         """Returns the object the view is displaying.
 
@@ -105,10 +126,13 @@ class DeleteContactView(generic.DeleteView):
     def get_success_url(self):
         return reverse('contacts-list')
 
+
 class ContactView(LoggedInMixin, ContactOwnerMixin, generic.DetailView):
     model = Contact
     template_name = 'contact.html'
     fields = '__all__'
+
+
 # class ContactView(generic.DetailView):
 #     model = Contact
 #     template_name = 'contact.html'
@@ -137,3 +161,6 @@ class GreetingView(generic.View):
 # the get is used from the parent
 class MorningGreetingView(GreetingView):
     greeting = "Morning to ya"
+
+
+

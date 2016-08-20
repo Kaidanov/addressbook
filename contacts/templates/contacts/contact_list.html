@@ -1,15 +1,25 @@
 {% extends "base.html" %}
+
+
+
 {% block content %}
-<h1 >Contacts</h1>
+    <h1>Contacts</h1>
+    {% block sidebar %}
+        <ul>
+            <li><a href="/contact_form/"> Create Contact Form</a></li>
+        </ul>
+        <br/>
+        <br/>
 
-<ul class="list-group">
-    {% for contact in object_list %}
-    <li class="list-group-item contact">
-        <a href="{{ contact.get_absolute_url }}">{{ contact }}</a>
-        (<a href="{% url 'contacts-edit' pk=contact.id %}">edit</a>)
-    </li>
-    {% endfor %}
-</ul>
+    {% endblock %}
+    <ul class="list-group">
+        {% for contact in object_list %}
+            <li class="list-group-item contact">
+                <a href="{{ contact.get_absolute_url }}">{{ contact }}</a>
+                (<a href="{% url 'contacts-edit' pk=contact.id %}">edit</a>)
+            </li>
+        {% endfor %}
+    </ul>
 
-<a href="{% url 'contacts-new' %}">add contact</a>
+    <a href="{% url 'contacts-new' %}">add contact</a>
 {% endblock %}

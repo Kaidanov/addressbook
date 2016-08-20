@@ -19,5 +19,6 @@ urlpatterns = [
     url(r'^edit/(?P<pk>\d+)/$', views.UpdateContactView.as_view(), name='contacts-edit'),
     url(r'^delete/(?P<pk>\d+)/$', views.DeleteContactView.as_view(), name='contacts-delete'),
     url(r'^(?P<pk>\d+)/$', views.ContactView.as_view(), name='contacts-view'),
+    url(r'^contact_form/$', views.contact_form),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
